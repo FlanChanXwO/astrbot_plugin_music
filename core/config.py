@@ -113,10 +113,8 @@ class PluginConfig(ConfigNode):
     cards_per_row: int
     send_modes: list[str]
     record_supported: list[str]
-    # 升级后配置 Schema 尚未写回时，保持原有 Base64 发送链路。
-    napcat_record_source: str = "base64"
-    # 仅在 local_file 模式下使用；默认不改变既有的本地文件发送行为。
-    napcat_record_transcode: str = "off"
+    napcat_record_source: str
+    napcat_record_transcode: str
     file_supported: list[str]
     enable_comments: bool
     enable_lyrics: bool
@@ -141,6 +139,16 @@ class PluginConfig(ConfigNode):
         self.songs_dir.mkdir(parents=True, exist_ok=True)
 
         self._send_modes = [m.split("(", 1)[0].strip() for m in self.send_modes]
+
+    @property
+    def napcat_record_source(self) -> str:
+        """读取持久化的 NapCat 音频来源，缺失时保持历史兼容模式。"""
+        return self._data.get("napcat_record_source", "base64")
+
+    @property
+    def napcat_record_transcode(self) -> str:
+        """读取持久化的 NapCat 本地音频规范化策略。"""
+        return self._data.get("napcat_record_transcode", "off")
 
     @property
     def http_proxy(self) -> str | None:

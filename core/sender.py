@@ -250,6 +250,11 @@ class MusicSender:
                         raise ValueError(
                             f"不支持的 NapCat 语音规范化配置: {transcode!r}"
                         )
+                    logger.info(
+                        "NapCat 语音准备完成: "
+                        f"source={source}, transcode={transcode}, "
+                        f"bytes={file_path.stat().st_size}"
+                    )
                     seg = OneBotRecord(file=str(file_path.resolve()))
                 elif source == "base64":
                     seg = Record.fromURL(song.audio_url)

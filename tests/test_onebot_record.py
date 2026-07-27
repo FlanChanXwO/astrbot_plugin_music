@@ -77,5 +77,27 @@ class NapCatRecordConfigSchemaTests(unittest.TestCase):
         self.assertEqual(normalization["options"], ["off", "mp3_48k_mono"])
 
 
+@unittest.skipUnless(ASTRBOT_AVAILABLE, "需要 AstrBot 运行环境")
+class PluginConfigNapCatSettingsTests(unittest.TestCase):
+    """验证持久化配置不会被类默认值遮蔽。"""
+
+    def test_reads_persisted_napcat_record_settings(self):
+        """用户在 WebUI 保存的来源与规范化选项必须在运行时生效。"""
+        from core.config import PluginConfig
+
+        config = object.__new__(PluginConfig)
+        object.__setattr__(
+            config,
+            "_data",
+            {
+                "napcat_record_source": "local_file",
+                "napcat_record_transcode": "mp3_48k_mono",
+            },
+        )
+
+        self.assertEqual(config.napcat_record_source, "local_file")
+        self.assertEqual(config.napcat_record_transcode, "mp3_48k_mono")
+
+
 if __name__ == "__main__":
     unittest.main()
