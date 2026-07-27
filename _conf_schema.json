@@ -29,7 +29,7 @@
     },
     "nj_configs": {
         "description": "点歌专用配置",
-        "hint": "可创建多种点歌配置。nj点歌只读取第一个 nj点歌 项；后续重复的 nj点歌 不会生效。Cookie 仅用于向 nodejs服务的api根地址 请求网易音频地址，请只填写你信任的 NCM API。",
+        "hint": "可创建多种点歌配置。同一类型出现多项时，插件只使用列表中的第一项。请按各项说明填写内容，并仅向可信服务提供账号凭据。",
         "type": "template_list",
         "templates": {
             "nj": {
