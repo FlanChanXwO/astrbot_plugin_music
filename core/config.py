@@ -115,6 +115,8 @@ class PluginConfig(ConfigNode):
     record_supported: list[str]
     # 升级后配置 Schema 尚未写回时，保持原有 Base64 发送链路。
     napcat_record_source: str = "base64"
+    # 仅在 local_file 模式下使用；默认不改变既有的本地文件发送行为。
+    napcat_record_transcode: str = "off"
     file_supported: list[str]
     enable_comments: bool
     enable_lyrics: bool

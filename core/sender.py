@@ -16,6 +16,7 @@ from .config import PluginConfig
 from .downloader import Downloader
 from .lyrics_renderer import LyricsRenderer
 from .model import Song
+from .napcat_audio_normalizer import NapCatAudioNormalizer
 from .onebot_record import OneBotRecord
 from .platform import BaseMusicPlayer, TXQQMusic
 from .song_renderer import CardRenderer
@@ -33,6 +34,7 @@ class MusicSender:
         self.lyrics_renderer = lyrics_renderer
         self.downloader = downloader
         self.song_renderer = song_renderer
+        self.napcat_audio_normalizer = NapCatAudioNormalizer()
 
     @staticmethod
     def _format_time(duration_ms):
@@ -237,6 +239,17 @@ class MusicSender:
                     if not file_path:
                         logger.error(f"【{song.name}】NapCat 本地语音文件下载失败")
                         return False
+                    transcode = self.cfg.napcat_record_transcode
+                    if transcode == "mp3_48k_mono":
+                        file_path = (
+                            await self.napcat_audio_normalizer.normalize_for_record(
+                                file_path
+                            )
+                        )
+                    elif transcode != "off":
+                        raise ValueError(
+                            f"不支持的 NapCat 语音规范化配置: {transcode!r}"
+                        )
                     seg = OneBotRecord(file=str(file_path.resolve()))
                 elif source == "base64":
                     seg = Record.fromURL(song.audio_url)

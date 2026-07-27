@@ -65,6 +65,17 @@ class NapCatRecordConfigSchemaTests(unittest.TestCase):
         self.assertEqual(source["default"], "base64")
         self.assertEqual(source["options"], ["base64", "url", "local_file"])
 
+    def test_declares_optional_local_file_normalization(self):
+        """NapCat 本地路径模式应能显式启用发送前音频规范化。"""
+        schema = json.loads(
+            (PLUGIN_ROOT / "_conf_schema.json").read_text(encoding="utf-8")
+        )
+
+        normalization = schema["napcat_record_transcode"]
+        self.assertEqual(normalization["type"], "string")
+        self.assertEqual(normalization["default"], "off")
+        self.assertEqual(normalization["options"], ["off", "mp3_48k_mono"])
+
 
 if __name__ == "__main__":
     unittest.main()
