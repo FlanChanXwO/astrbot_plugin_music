@@ -7,17 +7,26 @@ from urllib.parse import urlencode
 
 
 def resolve_ncm_cookie(configs: Any) -> dict[str, str]:
-    """从 template_list 的第一项读取并解析 NCM Cookie。
+    """从第一个 nj 点歌模板读取并解析 NCM Cookie。
 
-    template_list 在 WebUI 中允许创建多项配置，但 nj 点歌只绑定一个
-    NCM API 账号。固定取第一项可避免在配置顺序变化时静默切换账号。
+    点歌专用配置未来可包含不同平台的模板，因此须跳过非 nj 项。多个 nj
+    项同时存在时仅使用第一项，避免配置顺序变化时静默切换账号。``ncm``
+    是早期模板键，仅为已保存配置保留兼容性。
     """
 
     if not isinstance(configs, list) or not configs:
         return {}
 
-    first_config = configs[0]
-    if not isinstance(first_config, Mapping):
+    first_config = next(
+        (
+            config
+            for config in configs
+            if isinstance(config, Mapping)
+            and config.get("__template_key") in {"nj", "ncm"}
+        ),
+        None,
+    )
+    if first_config is None:
         return {}
 
     raw_cookie = first_config.get("ncm_cookie")

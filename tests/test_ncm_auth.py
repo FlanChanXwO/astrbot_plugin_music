@@ -42,6 +42,16 @@ class ResolveNcmCookieTests(unittest.TestCase):
 
         self.assertEqual(resolve_ncm_cookie(configs), {})
 
+    def test_skips_other_song_templates_before_first_nj_template(self):
+        """其它点歌模板不能阻止 nj 点歌读取自己的首项配置。"""
+        configs = [
+            {"__template_key": "future_platform", "token": "unrelated"},
+            {"__template_key": "nj", "ncm_cookie": "MUSIC_U=nj_first"},
+            {"__template_key": "nj", "ncm_cookie": "MUSIC_U=nj_second"},
+        ]
+
+        self.assertEqual(resolve_ncm_cookie(configs), {"MUSIC_U": "nj_first"})
+
     def test_builds_song_url_without_exposing_cookie_in_query(self):
         """VIP Cookie 必须作为请求 Cookie，而不是 URL 查询参数。"""
         url, cookies = build_ncm_song_url_request(
@@ -56,17 +66,19 @@ class ResolveNcmCookieTests(unittest.TestCase):
 
 
 class NjConfigSchemaTests(unittest.TestCase):
-    """验证 nj 点歌专用配置在 WebUI 中可见且语义明确。"""
+    """验证点歌专用配置在 WebUI 中可扩展且语义明确。"""
 
-    def test_declares_single_effective_template_list(self):
-        """配置可以重复创建，但文案必须明确只使用第一项。"""
+    def test_declares_nj_song_template_in_generic_song_config(self):
+        """通用配置容器应以 nj点歌 作为首个可扩展模板。"""
         schema_path = PLUGIN_ROOT / "_conf_schema.json"
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
 
         nj_configs = schema["nj_configs"]
         self.assertEqual(nj_configs["type"], "template_list")
-        self.assertIn("第一项", nj_configs["hint"])
-        self.assertIn("ncm_cookie", nj_configs["templates"]["ncm"]["items"])
+        self.assertEqual(nj_configs["description"], "点歌专用配置")
+        self.assertIn("第一个 nj点歌", nj_configs["hint"])
+        self.assertEqual(nj_configs["templates"]["nj"]["name"], "nj点歌")
+        self.assertIn("ncm_cookie", nj_configs["templates"]["nj"]["items"])
 
 
 if __name__ == "__main__":

@@ -134,11 +134,11 @@ _🎵 高性能多平台点歌插件 🎵_
 ### nj 点歌 VIP Cookie
 
 当 `nj点歌` 需要取得网易云 VIP 歌曲的完整音频时，可在插件配置的
-`nj点歌专用配置` 中新增一项 `NCM API 授权`，并在 `ncm_cookie` 粘贴完整的
+`点歌专用配置` 中新增一项 `nj点歌`，并在 `ncm_cookie` 粘贴完整的
 网易云 Cookie。
 
-- `nj点歌专用配置` 是 template_list，WebUI 可以新增多项，但插件**只读取第一项**；
-  后续项不会生效。
+- `点歌专用配置` 是 template_list，未来可添加其它点歌方式。`nj点歌` 可以重复创建，
+  但插件**只读取第一个 `nj点歌` 项**；后续重复项不会生效。
 - Cookie 只用于请求 `nodejs_base_url/song/url`，以 HTTP `Cookie` 请求头传输，
   不会拼接到 URL。
 - Cookie 是账号凭据。请仅将 `nodejs_base_url` 指向你自己部署、可信的 NCM API；
