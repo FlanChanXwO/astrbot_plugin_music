@@ -113,6 +113,8 @@ class PluginConfig(ConfigNode):
     cards_per_row: int
     send_modes: list[str]
     record_supported: list[str]
+    # 升级后配置 Schema 尚未写回时，保持原有 Base64 发送链路。
+    napcat_record_source: str = "base64"
     file_supported: list[str]
     enable_comments: bool
     enable_lyrics: bool

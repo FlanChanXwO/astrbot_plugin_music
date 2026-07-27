@@ -76,7 +76,8 @@ class NjConfigSchemaTests(unittest.TestCase):
         nj_configs = schema["nj_configs"]
         self.assertEqual(nj_configs["type"], "template_list")
         self.assertEqual(nj_configs["description"], "点歌专用配置")
-        self.assertIn("第一个 nj点歌", nj_configs["hint"])
+        self.assertIn("同一类型", nj_configs["hint"])
+        self.assertIn("第一项", nj_configs["hint"])
         self.assertEqual(nj_configs["templates"]["nj"]["name"], "nj点歌")
         self.assertIn("ncm_cookie", nj_configs["templates"]["nj"]["items"])
 
