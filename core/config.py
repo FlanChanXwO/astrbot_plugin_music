@@ -114,7 +114,6 @@ class PluginConfig(ConfigNode):
     send_modes: list[str]
     record_supported: list[str]
     napcat_record_source: str
-    napcat_record_transcode: str
     file_supported: list[str]
     enable_comments: bool
     enable_lyrics: bool
@@ -144,11 +143,6 @@ class PluginConfig(ConfigNode):
     def napcat_record_source(self) -> str:
         """读取持久化的 NapCat 音频来源，缺失时保持历史兼容模式。"""
         return self._data.get("napcat_record_source", "base64")
-
-    @property
-    def napcat_record_transcode(self) -> str:
-        """读取持久化的 NapCat 本地音频规范化策略。"""
-        return self._data.get("napcat_record_transcode", "off")
 
     @property
     def http_proxy(self) -> str | None:

@@ -65,24 +65,21 @@ class NapCatRecordConfigSchemaTests(unittest.TestCase):
         self.assertEqual(source["default"], "base64")
         self.assertEqual(source["options"], ["base64", "url", "local_file"])
 
-    def test_declares_optional_local_file_normalization(self):
-        """NapCat 本地路径模式应能显式启用发送前音频规范化。"""
+    def test_does_not_expose_removed_transcoding_option(self):
+        """实测本地路径已足够，WebUI 不应保留多余的转码选项。"""
         schema = json.loads(
             (PLUGIN_ROOT / "_conf_schema.json").read_text(encoding="utf-8")
         )
 
-        normalization = schema["napcat_record_transcode"]
-        self.assertEqual(normalization["type"], "string")
-        self.assertEqual(normalization["default"], "off")
-        self.assertEqual(normalization["options"], ["off", "mp3_48k_mono"])
+        self.assertNotIn("napcat_record_transcode", schema)
 
 
 @unittest.skipUnless(ASTRBOT_AVAILABLE, "需要 AstrBot 运行环境")
 class PluginConfigNapCatSettingsTests(unittest.TestCase):
     """验证持久化配置不会被类默认值遮蔽。"""
 
-    def test_reads_persisted_napcat_record_settings(self):
-        """用户在 WebUI 保存的来源与规范化选项必须在运行时生效。"""
+    def test_reads_persisted_napcat_record_source(self):
+        """用户在 WebUI 保存的本地文件来源必须在运行时生效。"""
         from core.config import PluginConfig
 
         config = object.__new__(PluginConfig)
@@ -91,12 +88,10 @@ class PluginConfigNapCatSettingsTests(unittest.TestCase):
             "_data",
             {
                 "napcat_record_source": "local_file",
-                "napcat_record_transcode": "mp3_48k_mono",
             },
         )
 
         self.assertEqual(config.napcat_record_source, "local_file")
-        self.assertEqual(config.napcat_record_transcode, "mp3_48k_mono")
 
 
 if __name__ == "__main__":

@@ -146,16 +146,6 @@
         ],
         "default": "base64"
     },
-    "napcat_record_transcode": {
-        "description": "NapCat 本地语音规范化",
-        "hint": "仅在 NapCat 语音来源为 local_file 时有效。mp3_48k_mono 使用 AstrBot 容器已有的 FFmpeg，将下载的源音频转换为 24 kHz、单声道、48 kbps 的真实 MP3 后再交给 NapCat，可降低其处理高码率或格式错配音频时的内存峰值；NapCat 仍可能进行最终的 QQ 语音封装。off 保持下载原文件。",
-        "type": "string",
-        "options": [
-            "off",
-            "mp3_48k_mono"
-        ],
-        "default": "off"
-    },
     "file_supported": {
         "description": "支持发文件的消息平台",
         "hint": "此配置定义哪些消息平台支持发送文件消息，不支持的平台发送歌曲时将不采用文件模式",

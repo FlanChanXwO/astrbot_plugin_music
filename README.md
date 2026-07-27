@@ -98,16 +98,6 @@ _🎵 高性能多平台点歌插件 🎵_
 - `local_file`：插件先下载音频，再把绝对路径交给 NapCat。AstrBot 与 NapCat 必须
   共享该插件缓存所在的 `/AstrBot/data` 挂载；否则 NapCat 无法访问该路径。
 
-**napcat_record_transcode**
-
-仅在 `napcat_record_source=local_file` 时生效，用于避免把高码率或扩展名与内容不一致
-的源音频直接交给 NapCat：
-
-- `off`：默认值，保留下载的原文件。
-- `mp3_48k_mono`：调用 AstrBot 容器已有的 FFmpeg，生成 24 kHz、单声道、48 kbps 的
-  真实 MP3，再将该路径交给 NapCat。它不新增插件依赖；NapCat 仍可能进行最终的 QQ
-  语音封装，但处理的输入会显著更小。
-
 ---
 
 ### 🧩 附加功能
