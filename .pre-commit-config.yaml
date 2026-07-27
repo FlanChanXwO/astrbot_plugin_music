@@ -1,0 +1,9 @@
+repos:
+  # 使用已安装的 Ruff，避免为提交门禁额外引入隔离环境与依赖。
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: ruff check
+        language: system
+        types: [python]

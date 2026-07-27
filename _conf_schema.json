@@ -27,6 +27,25 @@
         "type": "string",
         "default": "https://163api.qijieya.cn"
     },
+    "nj_configs": {
+        "description": "nj点歌专用配置",
+        "hint": "可创建多个配置项，但插件只读取第一项；后续项不会生效。Cookie 仅用于向 nodejs服务的api根地址 请求网易音频地址，请只填写你信任的 NCM API。",
+        "type": "template_list",
+        "templates": {
+            "ncm": {
+                "name": "NCM API 授权",
+                "items": {
+                    "ncm_cookie": {
+                        "description": "网易云 Cookie",
+                        "hint": "用于 nj点歌 获取 VIP 音频地址。以 HTTP Cookie 请求头发送，不会拼接到 URL；请粘贴完整 Cookie。",
+                        "type": "text",
+                        "default": ""
+                    }
+                }
+            }
+        },
+        "default": []
+    },
     "song_limit": {
         "description": "搜索歌曲数量限制",
         "hint": "搜索歌曲数量限制",
